@@ -4,8 +4,8 @@ from openpyxl import load_workbook
 from copy import copy
 
 # Configuración
-archivo_lista = 'lista.xlsx'
-archivo_plantilla = 'GTI-RG-06Fichamantenimiento.xlsx'
+archivo_lista = 'lista3.xlsx'
+archivo_plantilla = 'GTImantenimiento.xlsx'
 carpeta_salida = 'archivos_generados'
 
 # Crear carpeta de salida
@@ -19,7 +19,7 @@ wb_plantilla = load_workbook(archivo_plantilla)
 hoja_plantilla = wb_plantilla.active
 
 for index, row in df.iterrows():
-    nombre = row['NOMBRE COLABORADOR']      # ajusta a tus nombres de columna
+    nombre = row['NOMBRE']      # ajusta a tus nombres de columna
     marca = row['MARCA']  # ajusta a tus nombres de columna
     serie = row['SERIAL']        # ajusta a tus nombres de columna
     
@@ -29,7 +29,7 @@ for index, row in df.iterrows():
     
     # Modificar plantilla (ajusta las celdas según necesites)
     nueva_hoja['D5'] = nombre
-    nueva_hoja['H5'] = marca + ' / ' + serie
+    nueva_hoja['H5'] = str(marca) + ' / ' + str(serie)
     #nueva_hoja['C1'] = serie
     
     # Guardar archivo
