@@ -4,8 +4,8 @@ from openpyxl import load_workbook
 from copy import copy
 
 # Configuración
-archivo_lista = 'archivo-lista.xlsx'
-archivo_plantilla = 'archivo-plantilla.xlsx'
+archivo_lista = 'lista.xlsx'
+archivo_plantilla = 'GTI-RG-06Fichamantenimiento.xlsx'
 carpeta_salida = 'archivos_generados'
 
 # Crear carpeta de salida
@@ -19,21 +19,21 @@ wb_plantilla = load_workbook(archivo_plantilla)
 hoja_plantilla = wb_plantilla.active
 
 for index, row in df.iterrows():
-    nombre = row['nombre']      # ajusta a tus nombres de columna
-    apellido = row['apellido']  # ajusta a tus nombres de columna
-    serie = row['serie']        # ajusta a tus nombres de columna
+    nombre = row['NOMBRE COLABORADOR']      # ajusta a tus nombres de columna
+    marca = row['MARCA']  # ajusta a tus nombres de columna
+    serie = row['SERIAL']        # ajusta a tus nombres de columna
     
     # Crear copia de la plantilla
     nuevo_wb = load_workbook(archivo_plantilla)
     nueva_hoja = nuevo_wb.active
     
     # Modificar plantilla (ajusta las celdas según necesites)
-    nueva_hoja['A1'] = nombre
-    nueva_hoja['B1'] = apellido
-    nueva_hoja['C1'] = serie
+    nueva_hoja['D5'] = nombre
+    nueva_hoja['H5'] = marca + ' / ' + serie
+    #nueva_hoja['C1'] = serie
     
     # Guardar archivo
-    nombre_archivo = f"{carpeta_salida}/{nombre}_{apellido}_{serie}.xlsx"
+    nombre_archivo = f"{carpeta_salida}/{nombre}_{marca}_{serie}.xlsx"
     nuevo_wb.save(nombre_archivo)
     print(f"Archivo generado: {nombre_archivo}")
 
