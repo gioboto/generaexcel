@@ -2,10 +2,17 @@ import pandas as pd
 import os
 from openpyxl import load_workbook
 from copy import copy
+from datetime import datetime 
+
+# PAra la fecha actual
+elhoy = datetime.now()
+fecha_formateada = elhoy.strftime("%Y/%m/%d")
+#fecha_formateada = "2025/07/11"
+cadenafechaformateada = str(fecha_formateada)
 
 # Configuración
-archivo_lista = 'lista3.xlsx'
-archivo_plantilla = 'GTImantenimiento.xlsx'
+archivo_lista = 'lista4.xlsx'
+archivo_plantilla = 'GTImantenimientoo.xlsx'
 carpeta_salida = 'archivos_generados'
 
 # Crear carpeta de salida
@@ -30,6 +37,7 @@ for index, row in df.iterrows():
     # Modificar plantilla 
     nueva_hoja['D5'] = nombre
     nueva_hoja['H5'] = str(marca) + ' / ' + str(serie)
+    nueva_hoja['D6'] = cadenafechaformateada
     
     
     # Guardar archivo

@@ -1,5 +1,5 @@
 import os
-from pyexcelerate import Workbook
+from openpyxl import load_workbook
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
@@ -10,30 +10,33 @@ carpeta_pdf = 'archivos_pdf'
 # Crear carpeta PDF si no existe
 os.makedirs(carpeta_pdf, exist_ok=True)
 
-
 def excel_to_pdf_multiplatform(input_excel_path, output_pdf_path):
-    # Leer el archivo Excel
-    wb = Workbook()
-    wb.read(input_excel_path)
-    ws = wb.get_sheet(1)  # Obtener la primera hoja
+    # Leer el archivo Excel con openpyxl
+    wb = load_workbook(input_excel_path)
+    ws = wb.active  # Obtener la hoja activa
     
     # Crear PDF
     c = canvas.Canvas(output_pdf_path, pagesize=letter)
     width, height = letter
     
-    # Configuración de texto
-    text = c.beginText(40, height - 40)
-    text.setFont("Helvetica", 10)
+    # Configuración inicial
+    x_offset = 40
+    y_offset = height - 40
+    line_height = 14
     
     # Escribir datos de Excel en PDF
-    for row in ws.Range(ws.getUsedRange()):
-        line = " | ".join([str(cell.Value) if cell.Value else "" for cell in row])
-        text.textLine(line)
+    for row in ws.iter_rows(values_only=True):
+        line = " | ".join([str(cell) if cell is not None else "" for cell in row])
+        
+        # Verificar si necesitamos nueva página
+        if y_offset <= 40:
+            c.showPage()
+            y_offset = height - 40
+        
+        c.drawString(x_offset, y_offset, line)
+        y_offset -= line_height
     
-    c.drawText(text)
     c.save()
-
-
 
 # Convertir todos los archivos Excel a PDF
 for archivo in os.listdir(carpeta_excel):
